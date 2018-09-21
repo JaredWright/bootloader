@@ -586,7 +586,7 @@ int bootloader_printf(const char *fmt, ...)
   p=buf;
 
   while (*p) {
-    bootloader_putc(*p, stdin);
+    putc(*p, stdin);
     n++;
     p++;
   }

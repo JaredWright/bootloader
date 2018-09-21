@@ -26,8 +26,6 @@
  */
 
 #include <stddef.h>
-#include <stdarg.h>
-#include <stdint.h>
 
 #ifndef __MICROLIB_H__
 #define __MICROLIB_H__
@@ -42,60 +40,39 @@ static const int false = 0;
  * Triggered on an unrecoverable condition; prints an error message
  * and terminates execution.
  */
-void bootloader_panic(const char * message);
+void panic(const char * message);
 
-/**
- * Most of the time, we'll run baremetal without any standard library
- * underneath us, so we'll want to declare some basic functions consumed
- * by discharge and libfdt.
- *
- * When we're running unit tests, we'll want to use the system headers--
- * which are required by our testing framework-- even if we'll still be linking
- * against the microlib code.
- */
-#ifndef __USE_SYSTEM_HEADERS__
+#define BOOTLOADER_PRINT(X, ...) bootloader_printf((X"\n"), ##__VA_ARGS__)
+#define BOOTLOADER_INFO(X, ...) bootloader_printf(("[BOOTLOADER] " X"\n"), ##__VA_ARGS__)
+#define BOOTLOADER_SUBINFO(X, ...) bootloader_printf(("[BOOTLOADER]     " X"\n"), ##__VA_ARGS__)
+#define BOOTLOADER_DEBUG(X, ...) bootloader_printf(("[BOOTLOADER DEBUG] " X"\n"), ##__VA_ARGS__)
+#define BOOTLOADER_ALERT(X, ...) bootloader_printf(("[BOOTLOADER ALERT] " X"\n"), ##__VA_ARGS__)
+#define BOOTLOADER_ERROR(X, ...) bootloader_printf(("[BOOTLOADER ERROR] " X"\n"), ##__VA_ARGS__)
 
-  // Discharge currently has no reason to support input streams, so we'll
-  // ignore these and print everything to the serial log.
-  #define stdin 0
-
-
-  /**
-   * Min and max macros.
-   */
-  #define max(a,b) \
-     ({ __typeof__ (a) _a = (a); \
-         __typeof__ (b) _b = (b); \
-       _a > _b ? _a : _b; })
-  #define min(a,b) \
-     ({ __typeof__ (a) _a = (a); \
-         __typeof__ (b) _b = (b); \
-       _a < _b ? _a : _b; })
-
-  void * memcpy(void * dest, const void * src, size_t n);
-  void * memmove(void *dst0, const void *src0, register size_t length);
-
-  void bootloader_putc(char c, void *stream);
-  extern int puts(const char * s);
-  size_t strlen(const char *s);
-  int memcmp(const void *s1, const void *s2, size_t n);
-  size_t strnlen(const char *s, size_t max);
-  void * memchr(const void *s, int c, size_t n);
-  void * bootloader_memset(void *b, int c, size_t len);
-
-  int bootloader_printf(const char *fmt, ...);
-
-#else
-  #include <stdio.h>
-  #include <string.h>
-  #include <stdlib.h>
-#endif
+#define stdin 0
 
 
 /**
- * Soft reboots the processor by jumping back to the initialization vector.
- */
-void reboot(void);
+* Min and max macros.
+*/
+#define max(a,b) \
+ ({ __typeof__ (a) _a = (a); \
+     __typeof__ (b) _b = (b); \
+   _a > _b ? _a : _b; })
+#define min(a,b) \
+ ({ __typeof__ (a) _a = (a); \
+     __typeof__ (b) _b = (b); \
+   _a < _b ? _a : _b; })
 
+void * memcpy(void * dest, const void * src, size_t n);
+void * memmove(void *dst0, const void *src0, register size_t length);
+
+void putc(char c, void *stream);
+int puts(const char * s);
+size_t strnlen(const char *s, size_t max);
+void * memchr(const void *s, int c, size_t n);
+void * memset(void *b, int c, size_t len);
+
+int bootloader_printf(const char *fmt, ...);
 
 #endif

@@ -4,12 +4,14 @@ ENTRY(_header)
 SECTIONS
 {
     /* Load/entry point (where the previous stage bootloader will place us) */
-    . = 0xf0000000;
+    /* TODO: Make this configurable through CMake */
+    /* . = 0xf0000000; */
+    . = 0x80000000;
 
     . = ALIGN(4);
     .text : {
-    PROVIDE(lds_bfstub_start = .);
-        *entry.o (.text)
+    PROVIDE(bootloader_start = .);
+        *start.o (.text)
         *(.text)
     }
 
@@ -25,47 +27,21 @@ SECTIONS
 
     /* Uninitialised data */
     . = ALIGN(8);
-    PROVIDE(lds_bss_start = .);
+    PROVIDE(bootloader_bss_start = .);
     .bss (NOLOAD) : {
         *(.bss) . = ALIGN(8);
     }
-    PROVIDE(lds_bss_end = .);
+    PROVIDE(bootloader_bss_end = .);
 
-    /* EL2 stack */
+    /* Bareflank bootloader stack */
+    /* TODO: Make this configurable through CMake */
     . = ALIGN(16);
     . += 0x10000; /* 64 KiB stack */
-    PROVIDE(el2_stack_end = .);
+    PROVIDE(bootloader_stack_end = .);
 
-    /* EL2 core 1 stack */
-    . = ALIGN(16);
-    . += 0x10000; /* 64 KiB stack */
-    el2_core1_stack_end = .;
-
-    /* EL2 core 2 stack */
-    . = ALIGN(16);
-    . += 0x10000; /* 64 KiB stack */
-    el2_core2_stack_end = .;
-
-    /* EL2 core 3 stack */
-    . = ALIGN(16);
-    . += 0x10000; /* 64 KiB stack */
-    el2_core3_stack_end = .;
-
-    /* Crypto Guest VM stack */
-    . = ALIGN(16);
-    . += 0x10000; /* 64 KiB stack */
-    crypto_guest_stack_end = .;
-
-    /* Page align the end of the bfstub */
+    /* Page align the end of the bootloader */
     . = ALIGN(512);
-    PROVIDE(lds_el2_bfstub_end = .);
-
-    /* EL1 stack */
-    . = ALIGN(16);
-    . += 0x10000; /* 64 KiB stack */
-    el1_stack_end = .;
-
-    lds_bfstub_end = .;
+    PROVIDE(bootloader_end = .);
 
     /DISCARD/ : { *(.dynstr*) }
     /DISCARD/ : { *(.dynamic*) }

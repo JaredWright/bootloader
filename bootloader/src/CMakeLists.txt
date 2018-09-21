@@ -42,24 +42,29 @@ string(REPLACE "--target=${BUILD_TARGET_ARCH}-vmm-elf " "" CMAKE_C_FLAGS ${CMAKE
 string(REPLACE "--target=${BUILD_TARGET_ARCH}-vmm-elf " "" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mgeneral-regs-only")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fno-stack-protector")
 
 # ------------------------------------------------------------------------------
 # Main bootloader elf executable
 # ------------------------------------------------------------------------------
 
 list(APPEND BOOTLOADER_SRC_FILES
-    entry.s
+    start.s
     main.c
-    exceptions.c
-    printf.c
+    boot.c
+    bootloader.c
     microlib.c
+    printf.c
+    util.s
     uart_tegra.s
 )
 
-add_vmm_executable(bootloader SOURCES ${BOOTLOADER_SRC_FILES})
+# add_vmm_executable(bootloader SOURCES ${BOOTLOADER_SRC_FILES})
+add_executable(bootloader_static ${BOOTLOADER_SRC_FILES})
 set(BOOTLOADER_LINKER_SCRIPT "${BOOTLOADER_SOURCE_ROOT_DIR}/scripts/linker/bootloader.lds")
 set_target_properties(bootloader_static PROPERTIES LINK_DEPENDS ${BOOTLOADER_LINKER_SCRIPT})
 target_link_libraries(bootloader_static -T ${BOOTLOADER_LINKER_SCRIPT})
+# set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_LINK_EXECUTABLE} -T ${BOOTLOADER_LINKER_SCRIPT}")
 set(BOOTLOADER_ELF ${CMAKE_CURRENT_BINARY_DIR}/bootloader_static)
 
 # ------------------------------------------------------------------------------
@@ -92,7 +97,9 @@ install(FILES ${DEVICE_TREE_BINARY} DESTINATION boot)
 
 set(BOOTLOADER_BIN ${CMAKE_CURRENT_BINARY_DIR}/bootloader.bin)
 add_custom_command(
-    COMMAND ${CMAKE_OBJCOPY} -v -O binary ${BOOTLOADER_ELF} ${BOOTLOADER_BIN}
+    COMMAND ${CMAKE_OBJCOPY} -v -O binary
+        --set-section-flags .bss=alloc,load,contents
+        ${BOOTLOADER_ELF} ${BOOTLOADER_BIN}
     OUTPUT ${BOOTLOADER_BIN}
     DEPENDS ${BOOTLOADER_ELF}
     COMMENT "Creating bootloader binary: ${BOOTLOADER_BIN}"
