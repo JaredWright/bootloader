@@ -109,15 +109,3 @@ void * memset(void *b, int c, size_t len)
 
     return b;
 }
-
-void panic(const char * message)
-{
-    BOOTLOADER_PRINT("-----------------------------------------------------------------");
-    BOOTLOADER_PRINT("[BOOTLOADER PANIC]: %s", message);
-    BOOTLOADER_PRINT("-----------------------------------------------------------------");
-
-    // TODO: This should probably induce a reboot,
-    // rather than sticking here.
-    while(1);
-}
-

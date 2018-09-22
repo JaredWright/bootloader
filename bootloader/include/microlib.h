@@ -35,13 +35,6 @@ static const int SUCCESS = 0;
 static const int true = 1;
 static const int false = 0;
 
-
-/**
- * Triggered on an unrecoverable condition; prints an error message
- * and terminates execution.
- */
-void panic(const char * message);
-
 #define BOOTLOADER_PRINT(X, ...) bootloader_printf((X"\n"), ##__VA_ARGS__)
 #define BOOTLOADER_INFO(X, ...) bootloader_printf(("[BOOTLOADER] " X"\n"), ##__VA_ARGS__)
 #define BOOTLOADER_SUBINFO(X, ...) bootloader_printf(("[BOOTLOADER]     " X"\n"), ##__VA_ARGS__)

@@ -17,6 +17,21 @@ boot_ret_t print_banner()
     return BOOT_CONTINUE;
 }
 
+boot_ret_t panic()
+{
+    BOOTLOADER_PRINT("--------------------------------------------------------");
+    BOOTLOADER_PRINT("|\\     /||\\     /|       (  ___  )|\\     /|       / )");
+    BOOTLOADER_PRINT("| )   ( || )   ( |       | (   ) || )   ( |   _  / /");
+    BOOTLOADER_PRINT("| |   | || (___) | _____ | |   | || (___) |  (_)( (");
+    BOOTLOADER_PRINT("| |   | ||  ___  |(_____)| |   | ||  ___  |     | |");
+    BOOTLOADER_PRINT("| |   | || (   ) |       | |   | || (   ) |   _ ( (");
+    BOOTLOADER_PRINT("| (___) || )   ( |       | (___) || )   ( |  (_) \\ \\");
+    BOOTLOADER_PRINT("(_______)|/     \\|       (_______)|/     \\|       \\_)");
+    BOOTLOADER_PRINT("   The bareflank bootloader terminated unexpectedly");
+    BOOTLOADER_PRINT("--------------------------------------------------------");
+    while(1);
+}
+
 boot_ret_t verify_environment()
 {
     BOOTLOADER_INFO("Verifying environment");

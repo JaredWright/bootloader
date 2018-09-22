@@ -4,6 +4,7 @@
 #include "boot.h"
 
 boot_ret_t print_banner();
+boot_ret_t panic();
 boot_ret_t verify_environment();
 boot_ret_t init_el2();
 boot_ret_t switch_to_el1();

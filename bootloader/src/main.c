@@ -20,5 +20,6 @@ void bootloader_main(void * fdt)
 
     // Execute the boot process
     boot_ret_t ret = boot_start();
-    panic("The bareflank bootloader terminated unexpectedly");
+    panic();
 }
+
