@@ -18,6 +18,7 @@
 
 include(${CMAKE_CURRENT_LIST_DIR}/scripts/cmake/config/default.cmake)
 include(${BOOTLOADER_SOURCE_CMAKE_DIR}/validate.cmake)
+include(${BOOTLOADER_SOURCE_CMAKE_DIR}/targets.cmake)
 
 include_dependency(BOOTLOADER_SOURCE_DEPENDS_DIR dtc)
 include_dependency(BOOTLOADER_SOURCE_DEPENDS_DIR libfdt)

@@ -127,7 +127,7 @@ boot_ret_t launch_bareflank()
     //
     // // bf_start_hypervisor_on_core(NULL);
     //
-    // return BOOT_SUCCESS;
+    return BOOT_CONTINUE;
 
 fail:
     BOOTLOADER_ERROR("Failed to launch Bareflank VMM (ELF loader not yet implemented)");

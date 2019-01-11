@@ -10,7 +10,7 @@ void bootloader_main(void * fdt)
     boot_add_prestart_fn(print_banner);
     boot_add_prestart_fn(verify_environment);
     boot_add_prestart_fn(init_el2);
-    boot_add_prestart_fn(init_platform_info);
+    // boot_add_prestart_fn(init_platform_info);
 
     boot_set_start_fn(launch_bareflank);
 

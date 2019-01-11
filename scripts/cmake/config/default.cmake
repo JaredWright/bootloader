@@ -71,6 +71,29 @@ add_config(
     DESCRIPTION "The device tree source file to be used with this bootloader"
 )
 
+add_config(
+    CONFIG_NAME FLASH_DEV
+    CONFIG_TYPE FILE
+    DEFAULT_VAL /dev/sdb1
+    DESCRIPTION "The device node to use for 'make flash' target"
+)
+
+add_config(
+    CONFIG_NAME FLASH_MOUNT
+    CONFIG_TYPE PATH
+    DEFAULT_VAL /media/jetson
+    DESCRIPTION "Path to mount FLASH_DEV to during 'make flash' target"
+    SKIP_VALIDATION
+)
+
+add_config(
+    CONFIG_NAME FLASH_PATH
+    CONFIG_TYPE PATH
+    DEFAULT_VAL boot
+    DESCRIPTION "Path to flash bootloader.bin on target device ${FLASH_DEV}"
+    SKIP_VALIDATION
+)
+
 # ------------------------------------------------------------------------------
 # Links
 # ------------------------------------------------------------------------------
