@@ -22,6 +22,7 @@ include(${BOOTLOADER_SOURCE_CMAKE_DIR}/targets.cmake)
 
 include_dependency(BOOTLOADER_SOURCE_DEPENDS_DIR dtc)
 include_dependency(BOOTLOADER_SOURCE_DEPENDS_DIR libfdt)
+include_dependency(BOOTLOADER_SOURCE_DEPENDS_DIR shoulder)
 
 add_subproject(
     bootloader vmm
@@ -29,6 +30,7 @@ add_subproject(
     DEPENDS bfintrinsics
     DEPENDS dtc
     DEPENDS libfdt
+    DEPENDS shoulder
     SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/bootloader/src
     TOOLCHAIN ${SOURCE_TOOLCHAIN_DIR}/gcc_aarch64_vmm.cmake
 )

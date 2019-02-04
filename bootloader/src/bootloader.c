@@ -55,8 +55,7 @@ boot_ret_t verify_environment()
 
 boot_ret_t init_el2()
 {
-    BOOTLOADER_INFO("Initializing EL2 default environment");
-
+    // Enable 64-bit execution for EL1
     uint64_t val = 0x80000000;
     WRITE_SYSREG_64(hcr_el2, val);
 
@@ -70,6 +69,15 @@ boot_ret_t init_platform_info()
     return BOOT_FAIL;
 }
 
+boot_ret_t init_bootloader()
+{
+    print_banner();
+    verify_environment();
+
+    init_el2();
+
+    return BOOT_CONTINUE;
+}
 
 boot_ret_t switch_to_el1()
 {
@@ -77,12 +85,14 @@ boot_ret_t switch_to_el1()
 
     uint32_t el = get_current_el();
     if (el != 2) {
+        BOOTLOADER_INFO("Things");
         BOOTLOADER_ERROR("Cannot switch to EL1 from EL%u", el);
         return BOOT_FAIL;
     }
     _switch_to_el1();
     el = get_current_el();
     if (el != 1) {
+        BOOTLOADER_INFO("Stuff");
         BOOTLOADER_ERROR("Failed to switch to EL1, currently running at EL%u", el);
         return BOOT_FAIL;
     }
