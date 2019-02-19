@@ -108,12 +108,12 @@ set(DTC_URL_MD5 "540fb180485cd98b73800d39f2993a29"
     "Device tree compiler/libfdt URL MD5 hash"
 )
 
-set(SHOULDER_URL "https://github.com/jaredwright/shoulder/archive/23cbb6828d751d0bb9893d5351c6e4a01e49bd88.zip"
+set(SHOULDER_URL "https://github.com/bareflank/shoulder/archive/master.zip"
     CACHE INTERNAL FORCE
     "Shoulder URL"
 )
 
-set(SHOULDER_URL_MD5 "2856b9747a6058cc46b60616f1744739"
+set(SHOULDER_URL_MD5 "ff30c732ced81fd3a1143d56b7380513"
     CACHE INTERNAL FORCE
     "Shoulder URL MD5 hash"
 )
